@@ -6,7 +6,7 @@ type person struct {
 	firstName string
 	lastName  string
 	age       int
-	contact   contactInfo
+	contactInfo
 }
 
 type contactInfo struct {
@@ -19,7 +19,7 @@ func main() {
 		firstName: "Dan",
 		lastName:  "Donovan",
 		age:       66,
-		contact: contactInfo{
+		contactInfo: contactInfo{
 			email:   "dand55@msn.com",
 			zipCode: 55434,
 		},
@@ -31,9 +31,24 @@ func main() {
 	karen.firstName = "Karen"
 	karen.lastName = "Donovan"
 	karen.age = 60
-	karen.contact.email = "kdonovan3@msn.com"
+	karen.contactInfo.email = "kdonovan3@msn.com"
+	karen.contactInfo.zipCode = 55434
 
-	fmt.Println(dan)
-	fmt.Println(richie)
-	fmt.Printf("%+v", karen) // Prints out fields and values
+	// richiePointer := &richie
+	// richiePointer.updateName("Richie")
+
+	// Lines 37/38 does the same exact thing as line 40
+	richie.updateName("Richie")
+
+	dan.print()
+	richie.print()
+	fmt.Printf("%+v\n", karen) // Prints out fields and values
+}
+
+func (pointerToPerson *person) updateName(newFirstName string) {
+	(*pointerToPerson).firstName = newFirstName
+}
+
+func (p person) print() {
+	fmt.Printf("%+v\n", p)
 }
