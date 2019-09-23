@@ -3,27 +3,27 @@ package main
 import (
 	"fmt"
 	"io"
-	"net/http"
+	"log"
 	"os"
 )
 
 type logWriter struct{}
 
 func main() {
-	resp, err := http.Get("http://google.com")
+	txtFile := os.Args[1]
+
+	opener, err := os.Open(txtFile)
 	if err != nil {
-		fmt.Println("Error:", err)
-		os.Exit(1)
+		errorMsg := fmt.Sprintf("failed to open txt file - error: %v", err)
+		log.Printf(errorMsg)
 	}
 
 	lw := logWriter{}
 
-	io.Copy(lw, resp.Body)
-
+	io.Copy(lw, opener)
 }
 
 func (logWriter) Write(bs []byte) (int, error) {
 	fmt.Println(string(bs))
-	fmt.Println("Just wrote this many bytes:", len(bs))
 	return len(bs), nil
 }
